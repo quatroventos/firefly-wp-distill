@@ -1,0 +1,4 @@
+host,post_id,path,https,robots,sitemap,llm,static
+incavel.example.test,2,/,1,1,1,1,0
+lp-consorcio.example.test,10,/,1,1,1,1,0
+lp-energia.example.test,11,/,1,1,1,1,0

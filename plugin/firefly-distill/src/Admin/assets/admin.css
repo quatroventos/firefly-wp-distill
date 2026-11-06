@@ -1,0 +1,8 @@
+.ffd-wrap code { font-size: 12px; }
+.ffd-muted { color: #646970; }
+.ffd-badge { background: #2271b1; color: #fff; border-radius: 3px; padding: 1px 6px; font-size: 11px; }
+.ffd-form .ffd-route { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.ffd-post-results { margin-top: 4px; }
+.ffd-post-results button { display: block; margin: 2px 0; }
+.ffd-card { background: #fff; border: 1px solid #dcdcde; padding: 12px; margin: 8px 0; }
+.ffd-wrap textarea.code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }

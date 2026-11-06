@@ -1,0 +1,20 @@
+# Antes do ProxyPass / regras WP. Host passa por regex; preferir RewriteMap com allowlist quando possível.
+
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+RewriteCond %{QUERY_STRING} !(^|&)firefly-distill=origin(&|$)
+RewriteCond %{HTTP_COOKIE} !(wordpress_logged_in_|firefly_distill_bypass=1)
+RewriteCond %{REQUEST_URI} !^/(wp-admin|wp-json|wp-login\.php|xmlrpc\.php)
+RewriteCond %{HTTP_HOST} ^([a-z0-9.-]+)$ [NC]
+RewriteCond /var/www/incavel/wp-content/uploads/firefly-distill/current/%1%{REQUEST_URI}index.html -f
+RewriteRule ^ /var/www/incavel/wp-content/uploads/firefly-distill/current/%1%{REQUEST_URI}index.html [L]
+
+RewriteCond %{REQUEST_METHOD} ^(GET|HEAD)$
+RewriteCond %{QUERY_STRING} !(^|&)firefly-distill=origin(&|$)
+RewriteCond %{HTTP_COOKIE} !(wordpress_logged_in_|firefly_distill_bypass=1)
+RewriteCond %{HTTP_HOST} ^([a-z0-9.-]+)$ [NC]
+RewriteCond /var/www/incavel/wp-content/uploads/firefly-distill/current/%1%{REQUEST_URI} -f
+RewriteRule ^/(robots\.txt|sitemap\.xml|llm\.txt|llms\.txt)$ /var/www/incavel/wp-content/uploads/firefly-distill/current/%1%{REQUEST_URI} [L]
+
+ProxyPass        / http://127.0.0.1:8080/
+ProxyPassReverse / http://127.0.0.1:8080/

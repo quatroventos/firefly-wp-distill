@@ -1,0 +1,14 @@
+{
+  "name": "firefly/openseo-client",
+  "description": "Cliente isolado OpenSEO para firefly-distill.",
+  "type": "library",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Firefly\\OpenSeo\\": "src/"
+    }
+  }
+}

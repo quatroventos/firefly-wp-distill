@@ -1,0 +1,35 @@
+# vhost de UMA landing page (Incavel).
+# Colar o location / ANTES do proxy_pass atual. Não substitui o mapeamento host→página WP.
+
+server {
+    listen 443 ssl http2;
+    server_name lp-consorcio.exemplo.com.br;
+
+    set $ff_root /var/www/incavel/wp-content/uploads/firefly-distill;
+
+    location ~ ^/(wp-admin|wp-json|wp-login\.php|xmlrpc\.php|wp-cron\.php|wp-content/plugins) {
+        proxy_pass http://wp_origin;
+        include /etc/nginx/snippets/ffd-proxy-headers.conf;
+    }
+
+    location ~ ^/(sitemap_index\.xml|wp-sitemap.*\.xml|[a-z0-9_-]+-sitemap[0-9]*\.xml)$ {
+        return 301 https://$host/sitemap.xml;
+    }
+
+    location / {
+        error_page 418 = @wp;
+        if ($ff_static = 0) { return 418; }
+
+        root $ff_root;
+        add_header X-FFD static always;
+        try_files /current/$ff_host_dir$uri
+                  /current/$ff_host_dir${uri}index.html
+                  /current/$ff_host_dir$uri/index.html
+                  @wp;
+    }
+
+    location @wp {
+        proxy_pass http://wp_origin;
+        include /etc/nginx/snippets/ffd-proxy-headers.conf;
+    }
+}

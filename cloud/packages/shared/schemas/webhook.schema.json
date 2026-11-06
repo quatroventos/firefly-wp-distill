@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://firefly.internal/schemas/webhook.json",
+  "title": "firefly-distill cloud to plugin webhook",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event", "job_id", "host", "status", "occurred_at"],
+  "properties": {
+    "event": {
+      "type": "string",
+      "enum": ["job.status", "job.audits", "job.suggestions", "build.delivered"]
+    },
+    "job_id": { "type": "integer" },
+    "host": { "type": "string" },
+    "status": { "type": "string" },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "build_id": { "type": ["string", "null"] },
+    "error": { "type": ["string", "null"] },
+    "audits": { "type": "array", "items": { "type": "object" } },
+    "suggestions": { "type": "array", "items": { "type": "object" } }
+  }
+}

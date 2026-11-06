@@ -1,0 +1,8 @@
+apps/api/vendor
+apps/api/node_modules
+apps/api/.env
+apps/worker/node_modules
+apps/worker/dist
+**/.git
+**/tests
+**/*.md

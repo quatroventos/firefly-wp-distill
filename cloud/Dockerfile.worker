@@ -1,0 +1,9 @@
+FROM mcr.microsoft.com/playwright:v1.49.0-noble
+
+WORKDIR /app
+COPY apps/worker/package.json apps/worker/package-lock.json* ./
+RUN npm install --omit=dev=false
+COPY apps/worker .
+COPY packages /packages
+ENV FFD_SKIP_LIGHTHOUSE=1
+CMD ["npx", "tsx", "src/index.ts"]

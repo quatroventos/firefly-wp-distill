@@ -1,0 +1,8 @@
+{
+  "core": null,
+  "phpVersion": "8.1",
+  "plugins": ["../../plugin/firefly-distill"],
+  "config": {
+    "FFD_HMAC_SECRET": "test-secret-local-only"
+  }
+}

@@ -1,0 +1,25 @@
+FROM php:8.3-cli-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git unzip libzip-dev libpng-dev libonig-dev \
+    && docker-php-ext-install pdo_mysql pcntl bcmath zip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /cloud/apps/api
+COPY packages /cloud/packages
+COPY apps/api /cloud/apps/api
+
+RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts \
+    && composer dump-autoload -o --no-dev \
+    && mkdir -p storage/logs storage/framework/{cache,sessions,views} bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+COPY docker/api-entrypoint.sh /usr/local/bin/api-entrypoint.sh
+RUN chmod +x /usr/local/bin/api-entrypoint.sh
+
+WORKDIR /cloud/apps/api
+EXPOSE 8000
+ENTRYPOINT ["api-entrypoint.sh"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

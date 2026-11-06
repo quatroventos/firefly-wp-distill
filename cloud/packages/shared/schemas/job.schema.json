@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://firefly.internal/schemas/job.json",
+  "title": "firefly-distill worker job payload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "site",
+    "scope",
+    "host",
+    "paths",
+    "bypass",
+    "delivery"
+  ],
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "home_url", "site_key_id"],
+      "properties": {
+        "id": { "type": "integer" },
+        "home_url": { "type": "string" },
+        "site_key_id": { "type": "string" },
+        "openseo_project_id": { "type": ["string", "null"] }
+      }
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["full", "host", "host_meta", "pages", "audit", "suggest"]
+    },
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "host", "post_id", "https", "flags", "routes"],
+      "properties": {
+        "id": { "type": "integer" },
+        "host": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+        "post_id": { "type": "integer" },
+        "https": { "type": "boolean" },
+        "flags": {
+          "type": "object",
+          "required": ["robots_index", "sitemap", "llm_txt", "static_enabled"],
+          "properties": {
+            "robots_index": { "type": "boolean" },
+            "sitemap": { "type": "boolean" },
+            "llm_txt": { "type": "boolean" },
+            "static_enabled": { "type": "boolean" }
+          }
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "post_id", "in_sitemap"],
+            "properties": {
+              "path": { "type": "string" },
+              "post_id": { "type": "integer" },
+              "in_sitemap": { "type": "boolean" },
+              "post_modified_gmt": { "type": ["string", "null"] }
+            }
+          }
+        },
+        "openseo_project_id": { "type": ["string", "null"] },
+        "gsc_property": { "type": ["string", "null"] },
+        "origin_ip": { "type": ["string", "null"] }
+      }
+    },
+    "paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "bypass": {
+      "type": "object",
+      "required": ["query_name"],
+      "properties": {
+        "query_name": { "const": "firefly-distill" },
+        "secret_hint": { "type": "string" }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "required": ["channel"],
+      "properties": {
+        "channel": { "enum": ["rest", "sftp"] },
+        "plugin_rest_url": { "type": "string" },
+        "job_token": { "type": "string" }
+      }
+    }
+  }
+}
